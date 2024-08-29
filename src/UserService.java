@@ -7,6 +7,9 @@ public class UserService {
     private Random random = new Random();
     private static final int MAX_ATTEMPTS = 1000; // Maximum attempts to find a unique ID
 
+    private static final int MIN_ID = 1000;
+    private static final int MAX_ID = 9999;
+
     // Create a new user with a unique random ID
     public void createUser(String name, int age) {
         int userId = generateUniqueUserId();
@@ -46,7 +49,7 @@ public class UserService {
         int userId;
         int attempts = 0;
         do {
-            userId = random.nextInt(Integer.MAX_VALUE); // Generate a random integer
+            userId = random.nextInt((MAX_ID - MIN_ID) + 1) + MIN_ID; // Generate a 4-digit integer
             attempts++;
         } while (userDatabase.containsKey(userId) && attempts < MAX_ATTEMPTS);
 
