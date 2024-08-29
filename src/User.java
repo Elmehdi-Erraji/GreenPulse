@@ -1,33 +1,61 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
+    private int id;
     private String name;
     private int age;
-    private int userId;
-    private CarbonConsumption consumption;
-    private double totalConsumption; // Field to track total consumption
+    private List<Consommation> consommations;  // List of Consommation objects
 
     // Constructor
-    public User(String name, int age, int userId) {
+    public User(int id, String name, int age) {
+        this.id = id;
         this.name = name;
         this.age = age;
-        this.userId = userId;
-        this.consumption = new CarbonConsumption();
-        this.totalConsumption = 0.0; // Initialize total consumption
+        this.consommations = new ArrayList<>();  // Initialize the list
     }
 
-    // Getters and Setters
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    // Getters
+    public int getId() {
+        return id;
+    }
 
-    public int getAge() { return age; }
-    public void setAge(int age) { this.age = age; }
+    public String getName() {
+        return name;
+    }
 
-    public int getUserId() { return userId; }
+    public int getAge() {
+        return age;
+    }
 
-    public CarbonConsumption getConsumption() { return consumption; }
+    // Modify account details
+    public void modifyAccount(String newName, int newAge) {
+        this.name = newName;
+        this.age = newAge;
+        System.out.println("Account modified successfully.");
+    }
 
-    public double getTotalConsumption() { return totalConsumption; }
+    // Add a new consommation entry
+    public void addConsommation(String date, Consommation consommation) {
+        this.consommations.add(consommation);
+        System.out.println("Consommation added for " + date + ".");
+    }
 
-    public void updateTotalConsumption(double additionalConsumption) {
-        this.totalConsumption += additionalConsumption;
+    // View consumption details
+    public void viewConsumption() {
+        System.out.println("Consumption details for user " + name + ":");
+        for (Consommation consommation : consommations) {
+            System.out.println("Date: " + consommation.getDate());
+            System.out.println("Amount (kg of CO2): " + consommation.getAmount());
+            System.out.println("------");
+        }
+        if (consommations.isEmpty()) {
+            System.out.println("No consommation records found.");
+        }
+    }
+
+    // Delete the account
+    public void deleteAccount() {
+        System.out.println("Account deleted for user: " + name);
     }
 }
