@@ -1,8 +1,9 @@
 public class User {
     private String name;
     private int age;
-    private int userId; // Changed from String to int
+    private int userId;
     private CarbonConsumption consumption;
+    private double totalConsumption; // Field to track total consumption
 
     // Constructor
     public User(String name, int age, int userId) {
@@ -10,6 +11,7 @@ public class User {
         this.age = age;
         this.userId = userId;
         this.consumption = new CarbonConsumption();
+        this.totalConsumption = 0.0; // Initialize total consumption
     }
 
     // Getters and Setters
@@ -19,7 +21,13 @@ public class User {
     public int getAge() { return age; }
     public void setAge(int age) { this.age = age; }
 
-    public int getUserId() { return userId; } // Changed from String to int
+    public int getUserId() { return userId; }
 
     public CarbonConsumption getConsumption() { return consumption; }
+
+    public double getTotalConsumption() { return totalConsumption; }
+
+    public void updateTotalConsumption(double additionalConsumption) {
+        this.totalConsumption += additionalConsumption;
+    }
 }

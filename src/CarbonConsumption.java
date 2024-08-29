@@ -1,45 +1,46 @@
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CarbonConsumption {
-    private double dailyConsumption;
-    private double weeklyConsumption;
-    private double monthlyConsumption;
+    private Map<LocalDate, Double> dailyConsumptions;
 
     // Constructor
     public CarbonConsumption() {
-        this.dailyConsumption = 0.0;
-        this.weeklyConsumption = 0.0;
-        this.monthlyConsumption = 0.0;
+        this.dailyConsumptions = new HashMap<>();
     }
 
-    // Getters and Setters
-    public double getDailyConsumption() { return dailyConsumption; }
-    public void setDailyConsumption(double dailyConsumption) { this.dailyConsumption = dailyConsumption; }
+    // Add consumption data for a given period
+    public double addConsumption(double amount, LocalDate startDate, LocalDate endDate) {
+        double totalAddedConsumption = 0.0;
+        LocalDate currentDate = startDate;
 
-    public double getWeeklyConsumption() { return weeklyConsumption; }
-    public void setWeeklyConsumption(double weeklyConsumption) { this.weeklyConsumption = weeklyConsumption; }
-
-    public double getMonthlyConsumption() { return monthlyConsumption; }
-    public void setMonthlyConsumption(double monthlyConsumption) { this.monthlyConsumption = monthlyConsumption; }
-
-    // Method to add consumption
-    public void addConsumption(double amount, String period) {
-        switch (period.toLowerCase()) {
-            case "daily":
-                dailyConsumption += amount;
-                break;
-            case "weekly":
-                weeklyConsumption += amount;
-                break;
-            case "monthly":
-                monthlyConsumption += amount;
-                break;
-            default:
-                System.out.println("Invalid period specified. Use 'daily', 'weekly', or 'monthly'.");
+        while (!currentDate.isAfter(endDate)) {
+            addDailyConsumption(amount, currentDate);
+            totalAddedConsumption += amount;
+            currentDate = currentDate.plusDays(1);
         }
+
+        return totalAddedConsumption;
     }
 
-    // Method to get a summary of consumption
-    public String getConsumptionSummary() {
-        return String.format("Daily Consumption: %.2f units\nWeekly Consumption: %.2f units\nMonthly Consumption: %.2f units",
-                dailyConsumption, weeklyConsumption, monthlyConsumption);
+    // Add daily consumption
+    private void addDailyConsumption(double amount, LocalDate date) {
+        dailyConsumptions.put(date, dailyConsumptions.getOrDefault(date, 0.0) + amount);
+    }
+
+    // Get total consumption for a given date range
+    public double getTotalDailyConsumption(LocalDate startDate, LocalDate endDate) {
+        return dailyConsumptions.entrySet().stream()
+                .filter(entry -> !entry.getKey().isBefore(startDate) && !entry.getKey().isAfter(endDate))
+                .mapToDouble(Map.Entry::getValue)
+                .sum();
+    }
+
+    // Get a summary of consumption between two dates
+    public String getConsumptionSummary(LocalDate startDate, LocalDate endDate) {
+        double totalDaily = getTotalDailyConsumption(startDate, endDate);
+
+        return String.format("Total Daily Consumption: %.2f units", totalDaily);
     }
 }

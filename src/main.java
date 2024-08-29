@@ -1,9 +1,12 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         UserService userService = new UserService();
         Scanner scanner = new Scanner(System.in);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         while (true) {
             System.out.println("Carbon Footprint Monitoring System");
@@ -36,6 +39,7 @@ public class Main {
                     User user = userService.readUser(readId);
                     if (user != null) {
                         System.out.println("User found: ID: " + user.getUserId() + ", Name: " + user.getName() + ", Age: " + user.getAge());
+                        System.out.println("Total Carbon Consumption: " + user.getTotalConsumption() + " units");
                     } else {
                         System.out.println("User not found.");
                     }
@@ -67,11 +71,18 @@ public class Main {
                     System.out.print("Enter amount of consumption: ");
                     double amount = scanner.nextDouble();
                     scanner.nextLine(); // Consume newline
-                    System.out.print("Enter period (daily, weekly, monthly): ");
-                    String period = scanner.nextLine();
+                    System.out.print("Enter start date (yyyy-MM-dd): ");
+                    String startDateStr = scanner.nextLine();
+                    System.out.print("Enter end date (yyyy-MM-dd): ");
+                    String endDateStr = scanner.nextLine();
+
+                    LocalDate startDate = LocalDate.parse(startDateStr, formatter);
+                    LocalDate endDate = LocalDate.parse(endDateStr, formatter);
+
                     User userToUpdate = userService.readUser(userId);
                     if (userToUpdate != null) {
-                        userToUpdate.getConsumption().addConsumption(amount, period);
+                        double addedConsumption = userToUpdate.getConsumption().addConsumption(amount, startDate, endDate);
+                        userToUpdate.updateTotalConsumption(addedConsumption);
                         System.out.println("Consumption added.");
                     } else {
                         System.out.println("User not found.");
@@ -81,9 +92,20 @@ public class Main {
                 case 6:
                     System.out.print("Enter user ID: ");
                     int summaryId = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Enter start date (yyyy-MM-dd): ");
+                    String summaryStartDateStr = scanner.nextLine();
+                    System.out.print("Enter end date (yyyy-MM-dd): ");
+                    String summaryEndDateStr = scanner.nextLine();
+
+                    LocalDate summaryStartDate = LocalDate.parse(summaryStartDateStr, formatter);
+                    LocalDate summaryEndDate = LocalDate.parse(summaryEndDateStr, formatter);
+
                     User userForSummary = userService.readUser(summaryId);
                     if (userForSummary != null) {
-                        System.out.println(userForSummary.getConsumption().getConsumptionSummary());
+                        String summary = userForSummary.getConsumption().getConsumptionSummary(summaryStartDate, summaryEndDate);
+                        System.out.println(summary);
+                        System.out.println("Total Carbon Consumption: " + userForSummary.getTotalConsumption() + " units");
                     } else {
                         System.out.println("User not found.");
                     }

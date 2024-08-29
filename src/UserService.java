@@ -1,62 +1,46 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class UserService {
-    private Map<Integer, User> userDatabase = new HashMap<>();
-    private Random random = new Random();
-    private static final int MAX_ATTEMPTS = 1000; // Maximum attempts to find a unique ID
+    private Map<Integer, User> users;
+    private int currentUserId;
 
-    private static final int MIN_ID = 1000;
-    private static final int MAX_ID = 9999;
+    // Constructor
+    public UserService() {
+        this.users = new HashMap<>();
+        this.currentUserId = 1000; // Starting user ID
+    }
 
-    // Create a new user with a unique random ID
+    // Create a new user
     public void createUser(String name, int age) {
-        int userId = generateUniqueUserId();
-        User user = new User(name, age, userId);
-        userDatabase.put(userId, user);
-        System.out.println("User created successfully with ID: " + userId);
+        User newUser = new User(name, age, currentUserId++);
+        users.put(newUser.getUserId(), newUser);
+        System.out.println("User created: ID = " + newUser.getUserId());
     }
 
-    // Read user details
+    // Read a user by their ID
     public User readUser(int userId) {
-        return userDatabase.get(userId);
+        return users.get(userId);
     }
 
-    // Update user details
-    public void updateUser(int userId, String name, int age) {
-        User user = userDatabase.get(userId);
+    // Update a user
+    public void updateUser(int userId, String newName, int newAge) {
+        User user = users.get(userId);
         if (user != null) {
-            user.setName(name);
-            user.setAge(age);
-            System.out.println("User updated successfully.");
+            user.setName(newName);
+            user.setAge(newAge);
+            System.out.println("User updated: ID = " + user.getUserId());
         } else {
             System.out.println("User not found.");
         }
     }
 
-    // Delete a user
+    // Delete a user by their ID
     public void deleteUser(int userId) {
-        if (userDatabase.remove(userId) != null) {
-            System.out.println("User deleted successfully.");
+        if (users.remove(userId) != null) {
+            System.out.println("User deleted: ID = " + userId);
         } else {
             System.out.println("User not found.");
         }
-    }
-
-    // Generate a unique random user ID
-    private int generateUniqueUserId() {
-        int userId;
-        int attempts = 0;
-        do {
-            userId = random.nextInt((MAX_ID - MIN_ID) + 1) + MIN_ID; // Generate a 4-digit integer
-            attempts++;
-        } while (userDatabase.containsKey(userId) && attempts < MAX_ATTEMPTS);
-
-        if (attempts >= MAX_ATTEMPTS) {
-            throw new RuntimeException("Unable to generate a unique user ID.");
-        }
-
-        return userId;
     }
 }
