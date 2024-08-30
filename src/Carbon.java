@@ -1,24 +1,31 @@
-
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Carbon {
-    private LocalDate date;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private double amount; // Amount of carbon consumed
 
-    public Carbon(LocalDate date, double amount) {
-        this.date = date;
+    public Carbon(LocalDate startDate, LocalDate endDate, double amount) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.amount = amount;
     }
 
     // Getters and Setters
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public double getAmount() {

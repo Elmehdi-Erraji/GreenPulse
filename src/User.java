@@ -1,17 +1,17 @@
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+    private String userId; // Unique identifier
     private String name;
     private int age;
-    private String userId; // Unique identifier
     private List<Carbon> carbonRecords; // List to store carbon records
 
-    public User(String name, int age, String userId) {
+    // Constructor to initialize User object with a generated userId
+    public User(String name, int age) {
+        this.userId = generateUniqueId(); // Automatically generate unique userId
         this.name = name;
         this.age = age;
-        this.userId = userId;
         this.carbonRecords = new ArrayList<>();
     }
 
@@ -50,5 +50,10 @@ public class User {
 
     public void removeCarbonRecord(Carbon carbon) {
         this.carbonRecords.remove(carbon);
+    }
+
+    // Method to generate a unique 4-digit user ID
+    private String generateUniqueId() {
+        return String.format("%04d", (int)(Math.random() * 10000));
     }
 }

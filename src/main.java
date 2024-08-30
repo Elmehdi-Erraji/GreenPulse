@@ -1,10 +1,8 @@
-
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
     private static UserService userService = new UserService();
-    private static CarbonService carbonService = new CarbonService();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -17,7 +15,8 @@ public class Main {
             System.out.println("4. Delete User");
             System.out.println("5. Add Carbon Record");
             System.out.println("6. View All Users");
-            System.out.println("7. Exit");
+            System.out.println("7. View Carbon Consumption Report");
+            System.out.println("8. Exit");
             System.out.print("Enter your choice: ");
 
             choice = scanner.nextInt();
@@ -43,12 +42,15 @@ public class Main {
                     viewAllUsers();
                     break;
                 case 7:
+                    viewConsumptionReport();
+                    break;
+                case 8:
                     System.out.println("Exiting...");
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 7);
+        } while (choice != 8);
     }
 
     private static void createUser() {
@@ -71,7 +73,7 @@ public class Main {
             System.out.println("Age: " + user.getAge());
             System.out.println("Carbon Records:");
             for (Carbon carbon : user.getCarbonRecords()) {
-                System.out.println("Date: " + carbon.getDate() + ", Amount: " + carbon.getAmount());
+                System.out.println("Date: " + carbon.getStartDate() + ", Amount: " + carbon.getAmount());
             }
         } else {
             System.out.println("User not found.");
@@ -110,13 +112,15 @@ public class Main {
         String userId = scanner.nextLine();
         User user = userService.getUserById(userId);
         if (user != null) {
-            System.out.print("Enter carbon record date (yyyy-mm-dd): ");
-            LocalDate date = LocalDate.parse(scanner.nextLine());
+            System.out.print("Enter carbon record start date (yyyy-mm-dd): ");
+            LocalDate startDate = LocalDate.parse(scanner.nextLine());
+            System.out.print("Enter carbon record end date (yyyy-mm-dd): ");
+            LocalDate endDate = LocalDate.parse(scanner.nextLine());
             System.out.print("Enter amount of carbon consumed: ");
             double amount = scanner.nextDouble();
             scanner.nextLine(); // Consume newline
-            Carbon carbon = new Carbon(date, amount);
-            carbonService.addCarbonRecord(user, carbon);
+            Carbon carbon = new Carbon(startDate, endDate, amount);
+            userService.addCarbonRecord(userId, carbon);
             System.out.println("Carbon record added.");
         } else {
             System.out.println("User not found.");
@@ -126,5 +130,23 @@ public class Main {
     private static void viewAllUsers() {
         System.out.println("All Users:");
         userService.displayAllUsers();
+    }
+
+    private static void viewConsumptionReport() {
+        System.out.print("Enter user ID: ");
+        String userId = scanner.nextLine();
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            System.out.print("Enter start date (yyyy-mm-dd): ");
+            LocalDate startDate = LocalDate.parse(scanner.nextLine());
+            System.out.print("Enter end date (yyyy-mm-dd): ");
+            LocalDate endDate = LocalDate.parse(scanner.nextLine());
+            System.out.print("Enter report type (daily, weekly, monthly): ");
+            String reportType = scanner.nextLine();
+
+            userService.generateConsumptionReport(user, startDate, endDate, reportType);
+        } else {
+            System.out.println("User not found.");
+        }
     }
 }
