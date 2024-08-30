@@ -1,61 +1,54 @@
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private int id;
     private String name;
     private int age;
-    private List<Consommation> consommations;  // List of Consommation objects
+    private String userId; // Unique identifier
+    private List<Carbon> carbonRecords; // List to store carbon records
 
-    // Constructor
-    public User(int id, String name, int age) {
-        this.id = id;
+    public User(String name, int age, String userId) {
         this.name = name;
         this.age = age;
-        this.consommations = new ArrayList<>();  // Initialize the list
+        this.userId = userId;
+        this.carbonRecords = new ArrayList<>();
     }
 
-    // Getters
-    public int getId() {
-        return id;
-    }
-
+    // Getters and Setters
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getAge() {
         return age;
     }
 
-    // Modify account details
-    public void modifyAccount(String newName, int newAge) {
-        this.name = newName;
-        this.age = newAge;
-        System.out.println("Account modified successfully.");
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    // Add a new consommation entry
-    public void addConsommation(String date, Consommation consommation) {
-        this.consommations.add(consommation);
-        System.out.println("Consommation added for " + date + ".");
+    public String getUserId() {
+        return userId;
     }
 
-    // View consumption details
-    public void viewConsumption() {
-        System.out.println("Consumption details for user " + name + ":");
-        for (Consommation consommation : consommations) {
-            System.out.println("Date: " + consommation.getDate());
-            System.out.println("Amount (kg of CO2): " + consommation.getAmount());
-            System.out.println("------");
-        }
-        if (consommations.isEmpty()) {
-            System.out.println("No consommation records found.");
-        }
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    // Delete the account
-    public void deleteAccount() {
-        System.out.println("Account deleted for user: " + name);
+    public List<Carbon> getCarbonRecords() {
+        return carbonRecords;
+    }
+
+    public void addCarbonRecord(Carbon carbon) {
+        this.carbonRecords.add(carbon);
+    }
+
+    public void removeCarbonRecord(Carbon carbon) {
+        this.carbonRecords.remove(carbon);
     }
 }
