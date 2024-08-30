@@ -58,33 +58,80 @@ public class UserService {
             return;
         }
 
-        double totalConsumption = 0;
-        long totalDays = 0;
-
-        // Calculate total consumption and total days
-        for (Consumption record : records) {
-            long daysBetween = ChronoUnit.DAYS.between(record.getStartDate(), record.getEndDate()) + 1;
-            totalConsumption += record.getAmount();
-            totalDays += daysBetween;
-        }
-
         switch (reportType.toLowerCase()) {
             case "daily":
-                double dailyConsumption = totalConsumption / totalDays;
-                System.out.printf("Average daily consumption over %d days: %.2f units%n", totalDays, dailyConsumption);
+                generateDailyReport(records);
                 break;
             case "weekly":
-                long totalWeeks = totalDays / 7;
-                double weeklyConsumption = totalConsumption / totalWeeks;
-                System.out.printf("Average weekly consumption over %d weeks: %.2f units%n", totalWeeks, weeklyConsumption);
+                generateWeeklyReport(records);
                 break;
             case "monthly":
-                long totalMonths = totalDays / 30;
-                double monthlyConsumption = totalConsumption / totalMonths;
-                System.out.printf("Average monthly consumption over %d months: %.2f units%n", totalMonths, monthlyConsumption);
+                generateMonthlyReport(records);
                 break;
             default:
                 System.out.println("Invalid report type.");
+        }
+    }
+
+    private void generateDailyReport(List<Consumption> records) {
+        System.out.println("Daily Consumption Report:");
+        for (Consumption record : records) {
+            long daysBetween = ChronoUnit.DAYS.between(record.getStartDate(), record.getEndDate()) + 1;
+            double dailyConsumption = record.getAmount() / daysBetween;
+
+            LocalDate currentDate = record.getStartDate();
+            while (!currentDate.isAfter(record.getEndDate())) {
+                System.out.printf("Date: %s, Consumption: %.2f units%n", currentDate, dailyConsumption);
+                currentDate = currentDate.plusDays(1);
+            }
+        }
+    }
+
+    private void generateWeeklyReport(List<Consumption> records) {
+        System.out.println("Weekly Consumption Report:");
+        for (Consumption record : records) {
+            long daysBetween = ChronoUnit.DAYS.between(record.getStartDate(), record.getEndDate()) + 1;
+            double dailyConsumption = record.getAmount() / daysBetween;
+
+            LocalDate currentDate = record.getStartDate();
+            double weeklyConsumption = 0;
+            int dayCounter = 0;
+
+            while (!currentDate.isAfter(record.getEndDate())) {
+                weeklyConsumption += dailyConsumption;
+                dayCounter++;
+
+                // Print consumption for each week
+                if (dayCounter % 7 == 0 || currentDate.equals(record.getEndDate())) {
+                    System.out.printf("Week ending %s, Consumption: %.2f units%n", currentDate, weeklyConsumption);
+                    weeklyConsumption = 0;
+                }
+
+                currentDate = currentDate.plusDays(1);
+            }
+        }
+    }
+
+    private void generateMonthlyReport(List<Consumption> records) {
+        System.out.println("Monthly Consumption Report:");
+        for (Consumption record : records) {
+            long daysBetween = ChronoUnit.DAYS.between(record.getStartDate(), record.getEndDate()) + 1;
+            double dailyConsumption = record.getAmount() / daysBetween;
+
+            LocalDate currentDate = record.getStartDate();
+            double monthlyConsumption = 0;
+
+            while (!currentDate.isAfter(record.getEndDate())) {
+                monthlyConsumption += dailyConsumption;
+
+                // Print consumption for each month
+                if (currentDate.getDayOfMonth() == currentDate.lengthOfMonth() || currentDate.equals(record.getEndDate())) {
+                    System.out.printf("Month ending %s, Consumption: %.2f units%n", currentDate, monthlyConsumption);
+                    monthlyConsumption = 0;
+                }
+
+                currentDate = currentDate.plusDays(1);
+            }
         }
     }
 }
