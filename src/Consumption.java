@@ -1,11 +1,11 @@
 import java.time.LocalDate;
 
-public class Carbon {
+public class Consumption {
     private LocalDate startDate;
     private LocalDate endDate;
     private double amount; // Amount of carbon consumed
 
-    public Carbon(LocalDate startDate, LocalDate endDate, double amount) {
+    public Consumption(LocalDate startDate, LocalDate endDate, double amount) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.amount = amount;

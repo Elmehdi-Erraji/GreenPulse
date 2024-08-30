@@ -5,14 +5,14 @@ public class User {
     private String userId; // Unique identifier
     private String name;
     private int age;
-    private List<Carbon> carbonRecords; // List to store carbon records
+    private List<Consumption> consumptionRecords; // List to store carbon records
 
     // Constructor to initialize User object with a generated userId
     public User(String name, int age) {
         this.userId = generateUniqueId(); // Automatically generate unique userId
         this.name = name;
         this.age = age;
-        this.carbonRecords = new ArrayList<>();
+        this.consumptionRecords = new ArrayList<>();
     }
 
     // Getters and Setters
@@ -40,16 +40,12 @@ public class User {
         this.userId = userId;
     }
 
-    public List<Carbon> getCarbonRecords() {
-        return carbonRecords;
+    public List<Consumption> getConsumptionRecords() {
+        return consumptionRecords;
     }
 
-    public void addCarbonRecord(Carbon carbon) {
-        this.carbonRecords.add(carbon);
-    }
-
-    public void removeCarbonRecord(Carbon carbon) {
-        this.carbonRecords.remove(carbon);
+    public void addConsumptionRecord(Consumption consumption) {
+        this.consumptionRecords.add(consumption);
     }
 
     // Method to generate a unique 4-digit user ID

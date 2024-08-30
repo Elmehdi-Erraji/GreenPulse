@@ -6,23 +6,48 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        int choice;
+        int mainChoice;
         do {
-            System.out.println("Menu:");
+            System.out.println("\nMain Menu:");
+            System.out.println("1. User Management");
+            System.out.println("2. Carbon Consumption");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+
+            mainChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (mainChoice) {
+                case 1:
+                    userManagementMenu();
+                    break;
+                case 2:
+                    carbonConsumptionMenu();
+                    break;
+                case 3:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        } while (mainChoice != 3);
+    }
+
+    private static void userManagementMenu() {
+        int userChoice;
+        do {
+            System.out.println("\nUser Management Menu:");
             System.out.println("1. Create User");
             System.out.println("2. View User");
             System.out.println("3. Update User");
             System.out.println("4. Delete User");
-            System.out.println("5. Add Carbon Record");
-            System.out.println("6. View All Users");
-            System.out.println("7. View Carbon Consumption Report");
-            System.out.println("8. Exit");
+            System.out.println("5. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
-            choice = scanner.nextInt();
+            userChoice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
-            switch (choice) {
+            switch (userChoice) {
                 case 1:
                     createUser();
                     break;
@@ -36,21 +61,38 @@ public class Main {
                     deleteUser();
                     break;
                 case 5:
-                    addCarbonRecord();
-                    break;
-                case 6:
-                    viewAllUsers();
-                    break;
-                case 7:
-                    viewConsumptionReport();
-                    break;
-                case 8:
-                    System.out.println("Exiting...");
-                    break;
+                    return; // Back to Main Menu
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 8);
+        } while (userChoice != 6);
+    }
+
+    private static void carbonConsumptionMenu() {
+        int carbonChoice;
+        do {
+            System.out.println("\nCarbon Consumption Menu:");
+            System.out.println("1. Add Carbon Record");
+            System.out.println("2. View Carbon Consumption Report");
+            System.out.println("3. Back to Main Menu");
+            System.out.print("Enter your choice: ");
+
+            carbonChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (carbonChoice) {
+                case 1:
+                    addCarbonRecord();
+                    break;
+                case 2:
+                    viewConsumptionReport();
+                    break;
+                case 3:
+                    return; // Back to Main Menu
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        } while (carbonChoice != 3);
     }
 
     private static void createUser() {
@@ -72,9 +114,7 @@ public class Main {
             System.out.println("Name: " + user.getName());
             System.out.println("Age: " + user.getAge());
             System.out.println("Carbon Records:");
-            for (Carbon carbon : user.getCarbonRecords()) {
-                System.out.println("Date: " + carbon.getStartDate() + ", Amount: " + carbon.getAmount());
-            }
+            userService.displayUserCarbonRecords(userId);
         } else {
             System.out.println("User not found.");
         }
@@ -112,24 +152,18 @@ public class Main {
         String userId = scanner.nextLine();
         User user = userService.getUserById(userId);
         if (user != null) {
-            System.out.print("Enter carbon record start date (yyyy-mm-dd): ");
+            System.out.print("Enter start date (yyyy-mm-dd): ");
             LocalDate startDate = LocalDate.parse(scanner.nextLine());
-            System.out.print("Enter carbon record end date (yyyy-mm-dd): ");
+            System.out.print("Enter end date (yyyy-mm-dd): ");
             LocalDate endDate = LocalDate.parse(scanner.nextLine());
             System.out.print("Enter amount of carbon consumed: ");
             double amount = scanner.nextDouble();
             scanner.nextLine(); // Consume newline
-            Carbon carbon = new Carbon(startDate, endDate, amount);
-            userService.addCarbonRecord(userId, carbon);
+            userService.addCarbonRecord(userId, startDate, endDate, amount);
             System.out.println("Carbon record added.");
         } else {
             System.out.println("User not found.");
         }
-    }
-
-    private static void viewAllUsers() {
-        System.out.println("All Users:");
-        userService.displayAllUsers();
     }
 
     private static void viewConsumptionReport() {
@@ -137,14 +171,34 @@ public class Main {
         String userId = scanner.nextLine();
         User user = userService.getUserById(userId);
         if (user != null) {
-            System.out.print("Enter start date (yyyy-mm-dd): ");
-            LocalDate startDate = LocalDate.parse(scanner.nextLine());
-            System.out.print("Enter end date (yyyy-mm-dd): ");
-            LocalDate endDate = LocalDate.parse(scanner.nextLine());
-            System.out.print("Enter report type (daily, weekly, monthly): ");
-            String reportType = scanner.nextLine();
+            int reportChoice;
+            do {
+                System.out.println("\nChoose Report Type:");
+                System.out.println("1. Daily");
+                System.out.println("2. Weekly");
+                System.out.println("3. Monthly");
+                System.out.println("4. Back to Carbon Menu");
+                System.out.print("Enter your choice: ");
 
-            userService.generateConsumptionReport(user, startDate, endDate, reportType);
+                reportChoice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+
+                switch (reportChoice) {
+                    case 1:
+                        userService.generateConsumptionReport(user, "daily");
+                        break;
+                    case 2:
+                        userService.generateConsumptionReport(user, "weekly");
+                        break;
+                    case 3:
+                        userService.generateConsumptionReport(user, "monthly");
+                        break;
+                    case 4:
+                        return; // Back to Carbon Menu
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } while (reportChoice != 4);
         } else {
             System.out.println("User not found.");
         }

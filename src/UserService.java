@@ -1,29 +1,23 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class UserService {
-    private Map<String, User> users; // Using HashMap to store users with their ID as the key
+    private HashMap<String, User> users = new HashMap<>();
 
-    public UserService() {
-        this.users = new HashMap<>();
-    }
-
-    // Create a new user
     public User createUser(String name, int age) {
         User user = new User(name, age);
-        users.put(user.getUserId(), user); // Add the user to the HashMap with userId as the key
+        users.put(user.getUserId(), user);
         return user;
     }
 
-    // Get user by ID
     public User getUserById(String userId) {
-        return users.get(userId); // Fetch the user from the HashMap by userId
+        return users.get(userId);
     }
 
-    // Update user details
     public boolean updateUser(String userId, String newName, int newAge) {
-        User user = getUserById(userId);
+        User user = users.get(userId);
         if (user != null) {
             user.setName(newName);
             user.setAge(newAge);
@@ -32,37 +26,65 @@ public class UserService {
         return false;
     }
 
-    // Delete a user
     public boolean deleteUser(String userId) {
-        if (users.containsKey(userId)) {
-            users.remove(userId); // Remove the user from the HashMap by userId
-            return true;
-        }
-        return false;
+        return users.remove(userId) != null;
     }
 
-    // Add a carbon consumption record to a user
-    public void addCarbonRecord(String userId, Carbon carbon) {
+    public void addCarbonRecord(String userId, LocalDate startDate, LocalDate endDate, double amount) {
         User user = getUserById(userId);
         if (user != null) {
-            user.addCarbonRecord(carbon);
+            user.addConsumptionRecord(new Consumption(startDate, endDate, amount));
         }
     }
 
-    // Display all users
-    public void displayAllUsers() {
-        if (users.isEmpty()) {
-            System.out.println("No users available.");
-        } else {
-            for (User user : users.values()) { // Iterate over the values (User objects) in the HashMap
-                System.out.println("User ID: " + user.getUserId() + ", Name: " + user.getName() + ", Age: " + user.getAge());
+    public void displayUserCarbonRecords(String userId) {
+        User user = getUserById(userId);
+        if (user != null) {
+            List<Consumption> records = user.getConsumptionRecords();
+            if (records.isEmpty()) {
+                System.out.println("No carbon records found.");
+            } else {
+                for (Consumption record : records) {
+                    System.out.println(record);
+                }
             }
         }
     }
 
-    // Generate a consumption report for a user
-    public void generateConsumptionReport(User user, LocalDate startDate, LocalDate endDate, String reportType) {
-        System.out.println("Generating " + reportType + " report for user ID: " + user.getUserId());
-        // Implement report generation logic here
+    public void generateConsumptionReport(User user, String reportType) {
+        List<Consumption> records = user.getConsumptionRecords();
+        if (records.isEmpty()) {
+            System.out.println("No carbon consumption records available.");
+            return;
+        }
+
+        double totalConsumption = 0;
+        long totalDays = 0;
+
+        // Calculate total consumption and total days
+        for (Consumption record : records) {
+            long daysBetween = ChronoUnit.DAYS.between(record.getStartDate(), record.getEndDate()) + 1;
+            totalConsumption += record.getAmount();
+            totalDays += daysBetween;
+        }
+
+        switch (reportType.toLowerCase()) {
+            case "daily":
+                double dailyConsumption = totalConsumption / totalDays;
+                System.out.printf("Average daily consumption over %d days: %.2f units%n", totalDays, dailyConsumption);
+                break;
+            case "weekly":
+                long totalWeeks = totalDays / 7;
+                double weeklyConsumption = totalConsumption / totalWeeks;
+                System.out.printf("Average weekly consumption over %d weeks: %.2f units%n", totalWeeks, weeklyConsumption);
+                break;
+            case "monthly":
+                long totalMonths = totalDays / 30;
+                double monthlyConsumption = totalConsumption / totalMonths;
+                System.out.printf("Average monthly consumption over %d months: %.2f units%n", totalMonths, monthlyConsumption);
+                break;
+            default:
+                System.out.println("Invalid report type.");
+        }
     }
 }
