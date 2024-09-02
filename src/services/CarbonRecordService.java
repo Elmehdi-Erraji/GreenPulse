@@ -1,58 +1,29 @@
+package services;
+
+import entities.CarbonRecord;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.List;
 
-public class UserService {
-    private HashMap<String, User> users = new HashMap<>();
+public class CarbonRecordService {
 
-    public User createUser(String name, int age) {
-        User user = new User(name, age);
-        users.put(user.getUserId(), user);
-        return user;
+    public void addCarbonRecord(List<CarbonRecord> carbonRecords, LocalDate startDate, LocalDate endDate, double amount) {
+        CarbonRecord newRecord = new CarbonRecord(startDate, endDate, amount);
+        carbonRecords.add(newRecord);
     }
 
-    public User getUserById(String userId) {
-        return users.get(userId);
-    }
-
-    public boolean updateUser(String userId, String newName, int newAge) {
-        User user = users.get(userId);
-        if (user != null) {
-            user.setName(newName);
-            user.setAge(newAge);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean deleteUser(String userId) {
-        return users.remove(userId) != null;
-    }
-
-    public void addCarbonRecord(String userId, LocalDate startDate, LocalDate endDate, double amount) {
-        User user = getUserById(userId);
-        if (user != null) {
-            user.addConsumptionRecord(new Consumption(startDate, endDate, amount));
-        }
-    }
-
-    public void displayUserCarbonRecords(String userId) {
-        User user = getUserById(userId);
-        if (user != null) {
-            List<Consumption> records = user.getConsumptionRecords();
-            if (records.isEmpty()) {
-                System.out.println("No carbon records found.");
-            } else {
-                for (Consumption record : records) {
-                    System.out.println(record);
-                }
+    public void displayCarbonRecords(List<CarbonRecord> records) {
+        if (records.isEmpty()) {
+            System.out.println("No carbon records found.");
+        } else {
+            for (CarbonRecord record : records) {
+                System.out.println(record);
             }
         }
     }
 
-    public void generateConsumptionReport(User user, String reportType) {
-        List<Consumption> records = user.getConsumptionRecords();
+    public void generateConsumptionReport(List<CarbonRecord> records, String reportType) {
         if (records.isEmpty()) {
             System.out.println("No carbon consumption records available.");
             return;
@@ -73,9 +44,9 @@ public class UserService {
         }
     }
 
-    private void generateDailyReport(List<Consumption> records) {
+    private void generateDailyReport(List<CarbonRecord> records) {
         System.out.println("Daily Consumption Report:");
-        for (Consumption record : records) {
+        for (CarbonRecord record : records) {
             long daysBetween = ChronoUnit.DAYS.between(record.getStartDate(), record.getEndDate()) + 1;
             double dailyConsumption = record.getAmount() / daysBetween;
 
@@ -87,9 +58,9 @@ public class UserService {
         }
     }
 
-    private void generateWeeklyReport(List<Consumption> records) {
+    private void generateWeeklyReport(List<CarbonRecord> records) {
         System.out.println("Weekly Consumption Report:");
-        for (Consumption record : records) {
+        for (CarbonRecord record : records) {
             long daysBetween = ChronoUnit.DAYS.between(record.getStartDate(), record.getEndDate()) + 1;
             double dailyConsumption = record.getAmount() / daysBetween;
 
@@ -112,9 +83,9 @@ public class UserService {
         }
     }
 
-    private void generateMonthlyReport(List<Consumption> records) {
+    private void generateMonthlyReport(List<CarbonRecord> records) {
         System.out.println("Monthly Consumption Report:");
-        for (Consumption record : records) {
+        for (CarbonRecord record : records) {
             long daysBetween = ChronoUnit.DAYS.between(record.getStartDate(), record.getEndDate()) + 1;
             double dailyConsumption = record.getAmount() / daysBetween;
 

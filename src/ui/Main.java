@@ -1,3 +1,8 @@
+package ui;
+
+import entities.User;
+import services.UserService;
+
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -65,7 +70,7 @@ public class Main {
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (userChoice != 6);
+        } while (userChoice != 5);
     }
 
     private static void carbonConsumptionMenu() {
