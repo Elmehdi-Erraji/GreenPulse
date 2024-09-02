@@ -1,13 +1,9 @@
 package entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class User {
     private String userId;
     private String name;
     private int age;
-    private List<CarbonRecord> carbonRecords = new ArrayList<>();
 
     public User(String userId, String name, int age) {
         this.userId = userId;
@@ -15,23 +11,35 @@ public class User {
         this.age = age;
     }
 
+    // Getter and Setter for userId
     public String getUserId() {
         return userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    // Getter and Setter for name
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Getter and Setter for age
     public int getAge() {
         return age;
     }
 
-    public List<CarbonRecord> getCarbonRecords() {
-        return carbonRecords;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public void addCarbonRecord(CarbonRecord record) {
-        this.carbonRecords.add(record);
+    @Override
+    public String toString() {
+        return "User ID: " + userId + ", Name: " + name + ", Age: " + age;
     }
 }
