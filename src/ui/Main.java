@@ -4,6 +4,8 @@ import entities.User;
 import services.UserService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -19,8 +21,7 @@ public class Main {
             System.out.println("3. Exit");
             System.out.print("Enter your choice: ");
 
-            mainChoice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            mainChoice = getValidIntInput();  // Input validation for main menu choice
 
             switch (mainChoice) {
                 case 1:
@@ -49,8 +50,7 @@ public class Main {
             System.out.println("5. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
-            userChoice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            userChoice = getValidIntInput();  // Input validation for user management choices
 
             switch (userChoice) {
                 case 1:
@@ -82,8 +82,7 @@ public class Main {
             System.out.println("3. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
-            carbonChoice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            carbonChoice = getValidIntInput();  // Input validation for carbon consumption choices
 
             switch (carbonChoice) {
                 case 1:
@@ -104,8 +103,8 @@ public class Main {
         System.out.print("Enter name: ");
         String name = scanner.nextLine();
         System.out.print("Enter age: ");
-        int age = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        int age = getValidIntInput();  // Input validation for age
+
         User user = userService.createUser(name, age);
         System.out.println("User created with ID: " + user.getUserId());
     }
@@ -120,7 +119,7 @@ public class Main {
             System.out.println("Name: " + user.getName());
             System.out.println("Age: " + user.getAge());
             System.out.println("Carbon Records:");
-            userService.displayUserCarbonRecords(userId); // Display individual records
+            userService.displayUserCarbonRecords(userId);  // Display individual carbon records
 
             // Display total carbon consumption
             double totalCarbonConsumption = user.getTotalCarbonConsumption();
@@ -130,15 +129,14 @@ public class Main {
         }
     }
 
-
     private static void updateUser() {
         System.out.print("Enter user ID: ");
         String userId = scanner.nextLine();
         System.out.print("Enter new name: ");
         String newName = scanner.nextLine();
         System.out.print("Enter new age: ");
-        int newAge = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        int newAge = getValidIntInput();  // Input validation for age
+
         boolean updated = userService.updateUser(userId, newName, newAge);
         if (updated) {
             System.out.println("User updated successfully.");
@@ -162,14 +160,18 @@ public class Main {
         System.out.print("Enter user ID: ");
         String userId = scanner.nextLine();
         User user = userService.getUserById(userId);
+
         if (user != null) {
-            System.out.print("Enter start date (yyyy-mm-dd): ");
-            LocalDate startDate = LocalDate.parse(scanner.nextLine());
-            System.out.print("Enter end date (yyyy-mm-dd): ");
-            LocalDate endDate = LocalDate.parse(scanner.nextLine());
+            LocalDate startDate = getValidDateInput("Enter start date (yyyy-mm-dd): ");
+            LocalDate endDate = getValidDateInput("Enter end date (yyyy-mm-dd): ");
+
+            if (endDate.isBefore(startDate)) {  // Date comparison to ensure valid range
+                System.out.println("End date cannot be before start date. Please try again.");
+                return;
+            }
+
             System.out.print("Enter amount of carbon consumed: ");
-            double amount = scanner.nextDouble();
-            scanner.nextLine(); // Consume newline
+            double amount = getValidDoubleInput();  // Input validation for carbon consumption amount
             userService.addCarbonRecord(userId, startDate, endDate, amount);
             System.out.println("Carbon record added.");
         } else {
@@ -191,8 +193,7 @@ public class Main {
                 System.out.println("4. Back to Carbon Menu");
                 System.out.print("Enter your choice: ");
 
-                reportChoice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                reportChoice = getValidIntInput();  // Input validation for report choice
 
                 switch (reportChoice) {
                     case 1:
@@ -205,13 +206,56 @@ public class Main {
                         userService.generateConsumptionReport(user, "monthly");
                         break;
                     case 4:
-                        return; // Back to Carbon Menu
+                        return;  // Back to Carbon Menu
                     default:
                         System.out.println("Invalid choice. Please try again.");
                 }
             } while (reportChoice != 4);
         } else {
             System.out.println("User not found.");
+        }
+    }
+
+    // Utility functions for input validation
+    private static int getValidIntInput() {
+        int number;
+        while (true) {
+            try {
+                number = scanner.nextInt();
+                scanner.nextLine();  // Consume newline
+                return number;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine();  // Consume invalid input
+            }
+        }
+    }
+
+    private static double getValidDoubleInput() {
+        double number;
+        while (true) {
+            try {
+                number = scanner.nextDouble();
+                scanner.nextLine();  // Consume newline
+                return number;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid decimal number.");
+                scanner.nextLine();  // Consume invalid input
+            }
+        }
+    }
+
+    private static LocalDate getValidDateInput(String message) {
+        LocalDate date;
+        while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine();
+            try {
+                date = LocalDate.parse(input);
+                return date;
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Please enter a date in yyyy-mm-dd format.");
+            }
         }
     }
 }
