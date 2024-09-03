@@ -24,4 +24,9 @@ public class CarbonRecord {
     public double getAmount() {
         return amount;
     }
+
+    @Override
+    public String toString() {
+        return "Start Date: " + startDate + ", End Date: " + endDate + ", Amount: " + amount + " units";
+    }
 }

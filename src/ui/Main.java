@@ -114,16 +114,22 @@ public class Main {
         System.out.print("Enter user ID: ");
         String userId = scanner.nextLine();
         User user = userService.getUserById(userId);
+
         if (user != null) {
             System.out.println("User ID: " + user.getUserId());
             System.out.println("Name: " + user.getName());
             System.out.println("Age: " + user.getAge());
             System.out.println("Carbon Records:");
-            userService.displayUserCarbonRecords(userId);
+            userService.displayUserCarbonRecords(userId); // Display individual records
+
+            // Display total carbon consumption
+            double totalCarbonConsumption = user.getTotalCarbonConsumption();
+            System.out.println("Total Carbon Consumption: " + totalCarbonConsumption + " units");
         } else {
             System.out.println("User not found.");
         }
     }
+
 
     private static void updateUser() {
         System.out.print("Enter user ID: ");
