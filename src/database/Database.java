@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Database {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/green_pulse";
+    private static final String URL = "jdbc:postgresql://localhost:5432/GreenPulse";
     private static final String USER = "GreenPulse";
     private static final String PASSWORD = "";
 
