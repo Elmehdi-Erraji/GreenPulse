@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5cc24d83-656d-48f0-b837-1129307ccb95" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +52,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.ui.Main">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="GreenPulseed" />
@@ -108,7 +107,9 @@
       <workItem from="1725354428519" duration="378000" />
       <workItem from="1725389122885" duration="5091000" />
       <workItem from="1725451989701" duration="1771000" />
-      <workItem from="1725462019605" duration="4044000" />
+      <workItem from="1725462019605" duration="4941000" />
+      <workItem from="1725522380579" duration="577000" />
+      <workItem from="1725536799062" duration="140000" />
     </task>
     <servers />
   </component>
