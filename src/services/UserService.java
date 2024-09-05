@@ -6,9 +6,9 @@ import entities.CarbonRecord;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 public class UserService {
 
@@ -16,6 +16,7 @@ public class UserService {
     private Map<String, List<CarbonRecord>> userCarbonRecords = new HashMap<>();
     private static int userIdCounter = 1000;
 
+    // Create a new user and initialize their carbon records list
     public User createUser(String name, int age) {
         String userId = String.valueOf(userIdCounter++);
         User user = new User(userId, name, age);
@@ -24,10 +25,12 @@ public class UserService {
         return user;
     }
 
+    // Retrieve a user by their ID
     public User getUserById(String userId) {
         return users.get(userId);
     }
 
+    // Update a user's name and age
     public boolean updateUser(String userId, String newName, int newAge) {
         User user = users.get(userId);
         if (user != null) {
@@ -38,6 +41,7 @@ public class UserService {
         return false;
     }
 
+    // Delete a user and their associated carbon records
     public boolean deleteUser(String userId) {
         if (users.containsKey(userId)) {
             users.remove(userId);
@@ -47,16 +51,35 @@ public class UserService {
         return false;
     }
 
+    // Add a carbon record for a user, ensuring no overlap with existing records
     public void addCarbonRecord(String userId, LocalDate startDate, LocalDate endDate, double amount) {
         List<CarbonRecord> carbonRecords = userCarbonRecords.get(userId);
         if (carbonRecords != null) {
             CarbonRecord newRecord = new CarbonRecord(startDate, endDate, amount);
-            carbonRecords.add(newRecord);
+
+            if (canAddRecord(carbonRecords, newRecord)) {
+                carbonRecords.add(newRecord);
+                System.out.println("Carbon record added: " + newRecord);
+            } else {
+                System.out.println("Record overlaps with existing records. Cannot add.");
+            }
         } else {
             System.out.println("User not found.");
         }
     }
 
+    // Check if a new carbon record can be added without overlapping existing records
+    private boolean canAddRecord(List<CarbonRecord> existingRecords, CarbonRecord newRecord) {
+        for (CarbonRecord existingRecord : existingRecords) {
+            if (newRecord.getStartDate().isBefore(existingRecord.getEndDate()) &&
+                    newRecord.getEndDate().isAfter(existingRecord.getStartDate())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Display all carbon records for a given user
     public void displayUserCarbonRecords(String userId) {
         List<CarbonRecord> records = userCarbonRecords.get(userId);
         if (records != null && !records.isEmpty()) {
@@ -68,6 +91,7 @@ public class UserService {
         }
     }
 
+    // Generate a consumption report for a user based on the report type (daily, weekly, monthly)
     public void generateConsumptionReport(User user, String reportType) {
         List<CarbonRecord> records = userCarbonRecords.get(user.getUserId());
         if (records != null && !records.isEmpty()) {
@@ -89,6 +113,7 @@ public class UserService {
         }
     }
 
+    // Helper method to generate reports
     private void generateReport(List<CarbonRecord> records, String reportType) {
         System.out.println(reportType + " Consumption Report:");
         for (CarbonRecord record : records) {

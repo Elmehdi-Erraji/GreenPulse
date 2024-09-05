@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5cc24d83-656d-48f0-b837-1129307ccb95" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +106,9 @@
       <workItem from="1725288378319" duration="2502000" />
       <workItem from="1725299484761" duration="7556000" />
       <workItem from="1725354428519" duration="378000" />
-      <workItem from="1725389122885" duration="3446000" />
+      <workItem from="1725389122885" duration="5091000" />
+      <workItem from="1725451989701" duration="1771000" />
+      <workItem from="1725462019605" duration="4044000" />
     </task>
     <servers />
   </component>
@@ -119,32 +121,9 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/services/UserService.java</url>
-          <line>30</line>
-          <properties class="services.UserService" method="updateUser">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/services/UserService.java</url>
-          <line>26</line>
-          <properties class="services.UserService" method="getUserById">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/services/UserService.java</url>
-          <line>19</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/services/UserService.java</url>
-          <line>92</line>
+          <line>117</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
