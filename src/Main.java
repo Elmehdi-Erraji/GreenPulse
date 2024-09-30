@@ -14,13 +14,13 @@ public class Main {
     public static void main(String[] args) {
         int mainChoice;
         do {
-            System.out.println("\nMain Menu:");
+            System.out.println("\n Main Menu:");
             System.out.println("1. User Management");
             System.out.println("2. Carbon Consumption");
             System.out.println("3. Exit");
             System.out.print("Enter your choice: ");
 
-            mainChoice = getValidIntInput();  // Input validation for main menu choice
+            mainChoice = getValidIntInput();
 
             switch (mainChoice) {
                 case 1:
