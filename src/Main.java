@@ -213,17 +213,17 @@ public class Main {
         }
     }
 
-    // Utility functions for input validation
+    
     private static int getValidIntInput() {
         int number;
         while (true) {
             try {
                 number = scanner.nextInt();
-                scanner.nextLine();  // Consume newline
+                scanner.nextLine();  
                 return number;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
-                scanner.nextLine();  // Consume invalid input
+                scanner.nextLine();  
             }
         }
     }
@@ -233,11 +233,11 @@ public class Main {
         while (true) {
             try {
                 number = scanner.nextDouble();
-                scanner.nextLine();  // Consume newline
+                scanner.nextLine();  
                 return number;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid decimal number.");
-                scanner.nextLine();  // Consume invalid input
+                scanner.nextLine();  
             }
         }
     }
