@@ -2,7 +2,6 @@ package services;
 
 import entities.User;
 import entities.CarbonRecord;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 
 
 public class UserService {
-
     private Map<String, User> users = new HashMap<>();
     private Map<String, List<CarbonRecord>> userCarbonRecords = new HashMap<>();
     private static int userIdCounter = 1000;

@@ -7,7 +7,6 @@ public class User {
     private String userId;
     private String name;
     private int age;
-
     private List<CarbonRecord> carbonRecords;
 
     public User(String userId, String name, int age) {
@@ -15,7 +14,6 @@ public class User {
         this.name = name;
         this.age = age;
         this.carbonRecords = new ArrayList<>();
-        
     }
 
     public String getUserId() {
