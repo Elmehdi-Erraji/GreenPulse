@@ -49,8 +49,7 @@ public class Main {
             System.out.println("5. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
-            userChoice = getValidIntInput();  // Input validation for user management choices
-
+            userChoice = getValidIntInput(); 
             switch (userChoice) {
                 case 1:
                     createUser();
@@ -65,7 +64,7 @@ public class Main {
                     deleteUser();
                     break;
                 case 5:
-                    return; // Back to Main Menu
+                    return; 
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -81,7 +80,7 @@ public class Main {
             System.out.println("3. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
-            carbonChoice = getValidIntInput();  // Input validation for carbon consumption choices
+            carbonChoice = getValidIntInput();  
 
             switch (carbonChoice) {
                 case 1:
@@ -91,7 +90,7 @@ public class Main {
                     viewConsumptionReport();
                     break;
                 case 3:
-                    return; // Back to Main Menu
+                    return; 
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -102,7 +101,7 @@ public class Main {
         System.out.print("Enter name: ");
         String name = scanner.nextLine();
         System.out.print("Enter age: ");
-        int age = getValidIntInput();  // Input validation for age
+        int age = getValidIntInput();  
 
         User user = userService.createUser(name, age);
         System.out.println("User created with ID: " + user.getUserId());
@@ -118,9 +117,8 @@ public class Main {
             System.out.println("Name: " + user.getName());
             System.out.println("Age: " + user.getAge());
             System.out.println("Carbon Records:");
-            userService.displayUserCarbonRecords(userId);  // Display individual carbon records
-
-            // Display total carbon consumption
+            userService.displayUserCarbonRecords(userId);  
+            
             double totalCarbonConsumption = user.getTotalCarbonConsumption();
             System.out.println("Total Carbon Consumption: " + totalCarbonConsumption + " units");
         } else {
@@ -134,7 +132,7 @@ public class Main {
         System.out.print("Enter new name: ");
         String newName = scanner.nextLine();
         System.out.print("Enter new age: ");
-        int newAge = getValidIntInput();  // Input validation for age
+        int newAge = getValidIntInput();  
 
         boolean updated = userService.updateUser(userId, newName, newAge);
         if (updated) {
@@ -164,13 +162,13 @@ public class Main {
             LocalDate startDate = getValidDateInput("Enter start date (yyyy-mm-dd): ");
             LocalDate endDate = getValidDateInput("Enter end date (yyyy-mm-dd): ");
 
-            if (endDate.isBefore(startDate)) {  // Date comparison to ensure valid range
+            if (endDate.isBefore(startDate)) {  
                 System.out.println("End date cannot be before start date. Please try again.");
                 return;
             }
 
             System.out.print("Enter amount of carbon consumed: ");
-            double amount = getValidDoubleInput();  // Input validation for carbon consumption amount
+            double amount = getValidDoubleInput();  
             userService.addCarbonRecord(userId, startDate, endDate, amount);
             System.out.println("Carbon record added.");
         } else {
@@ -192,7 +190,7 @@ public class Main {
                 System.out.println("4. Back to Carbon Menu");
                 System.out.print("Enter your choice: ");
 
-                reportChoice = getValidIntInput();  // Input validation for report choice
+                reportChoice = getValidIntInput();  
 
                 switch (reportChoice) {
                     case 1:
