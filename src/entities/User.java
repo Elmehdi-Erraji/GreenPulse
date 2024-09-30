@@ -16,7 +16,6 @@ public class User {
         this.carbonRecords = new ArrayList<>(); // Initialize the list of CarbonRecords
     }
 
-    // Getter and Setter for userId
     public String getUserId() {
         return userId;
     }
@@ -25,7 +24,6 @@ public class User {
         this.userId = userId;
     }
 
-    // Getter and Setter for name
     public String getName() {
         return name;
     }
@@ -34,7 +32,6 @@ public class User {
         this.name = name;
     }
 
-    // Getter and Setter for age
     public int getAge() {
         return age;
     }
@@ -43,17 +40,14 @@ public class User {
         this.age = age;
     }
 
-    // Getter for carbonRecords
     public List<CarbonRecord> getCarbonRecords() {
         return carbonRecords;
     }
 
-    // Add a CarbonRecord to the user's list
     public void addCarbonRecord(CarbonRecord carbonRecord) {
         this.carbonRecords.add(carbonRecord);
     }
 
-    // Method to calculate total carbon consumption
     public double getTotalCarbonConsumption() {
         double total = 0.0;
         for (CarbonRecord record : carbonRecords) {

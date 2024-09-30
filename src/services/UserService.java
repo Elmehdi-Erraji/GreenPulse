@@ -68,7 +68,6 @@ public class UserService {
         }
     }
 
-    // Check if a new carbon record can be added without overlapping existing records
     private boolean canAddRecord(List<CarbonRecord> existingRecords, CarbonRecord newRecord) {
         for (CarbonRecord existingRecord : existingRecords) {
             if (newRecord.getStartDate().isBefore(existingRecord.getEndDate()) &&
@@ -79,7 +78,6 @@ public class UserService {
         return true;
     }
 
-    // Display all carbon records for a given user
     public void displayUserCarbonRecords(String userId) {
         List<CarbonRecord> records = userCarbonRecords.get(userId);
         if (records != null && !records.isEmpty()) {
@@ -91,7 +89,6 @@ public class UserService {
         }
     }
 
-    // Generate a consumption report for a user based on the report type (daily, weekly, monthly)
     public void generateConsumptionReport(User user, String reportType) {
         List<CarbonRecord> records = userCarbonRecords.get(user.getUserId());
         if (records != null && !records.isEmpty()) {
